@@ -184,19 +184,13 @@ def main():
                 st.write("Failed to load data.")
 
     # Buyer Page
-    # Buyer Page
     elif navigation == "Buyer Page" and data is not None:
-     st.header("Buyer Page")
+        st.header("Buyer Page")
 
-    # Inputs with better styling
-    rating_input = st.number_input(
-        "Review Rating (Exact Match)", min_value=0.0, max_value=5.0, value=3.0, step=0.1
-    )
-    price_input = st.number_input("Maximum Price ($)", min_value=0, value=500)
+        # Inputs with better styling
+        rating_input = st.number_input("Minimum Review Rating", min_value=0.0, max_value=5.0, value=3.0, step=0.1)
+        price_input = st.number_input("Maximum Price ($)", min_value=0, value=500)
 
-    if price_input > 12000:
-        st.error("Maximum price cannot exceed $12,000. Please enter a valid price.")
-    else:
         unique_property_types = (
             ["Any"] + sorted(data['property_type'].dropna().unique().tolist()) 
             if 'property_type' in data.columns else ["Any"]
@@ -214,7 +208,7 @@ def main():
         if search_button:
             filtered_data = data.copy()
 
-            # Filter by exact rating
+            # Filter by rating
             if 'review_scores_rating' in filtered_data.columns:
                 filtered_data = filtered_data[filtered_data['review_scores_rating'] == rating_input]
 
@@ -265,16 +259,15 @@ def main():
             else:
                 st.write("No properties match your search criteria.")
 
-
     # Seller Page
-        elif navigation == "Seller Page":
-            st.header("Seller Page")
+    elif navigation == "Seller Page":
+        st.header("Seller Page")
 
         # User inputs for prediction
-            accommodates = st.number_input("Accommodates", min_value=1, step=1)
-            bathrooms = st.number_input("Bathrooms", min_value=0.5, step=0.5)
-            bedrooms = st.number_input("Bedrooms", min_value=1, step=1)
-            beds = st.number_input("Beds", min_value=1, step=1)
+        accommodates = st.number_input("Accommodates", min_value=1, step=1)
+        bathrooms = st.number_input("Bathrooms", min_value=0.5, step=0.5)
+        bedrooms = st.number_input("Bedrooms", min_value=1, step=1)
+        beds = st.number_input("Beds", min_value=1, step=1)
         price = st.number_input("Price (USD)", min_value=10, step=1)
         neighborhood_overview = st.text_area("Neighborhood Overview")
         host_neighborhood = st.text_area("Host Neighborhood Description")
@@ -341,3 +334,24 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
