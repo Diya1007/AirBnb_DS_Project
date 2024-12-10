@@ -193,7 +193,7 @@ def main():
         if price_input > 12000:
                 st.error("Price cannot be greater than 12000. Please enter a valid price.")
                 price_input = 12000  # Optionally, you can reset the price input to 12000, or leave it to the user to correct.
-
+                st.empty()
 
         unique_property_types = (
             ["Any"] + sorted(data['property_type'].dropna().unique().tolist()) 
