@@ -15,7 +15,7 @@ from io import BytesIO
 # Set the page config for a wide layout
 st.set_page_config(page_title="Airbnb Data Viewer", layout="wide", initial_sidebar_state="expanded")
 
-# Add the utils to Python path
+# Add the utils directory to the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'utils')))
 
 
@@ -32,14 +32,14 @@ b2 = B2(
     secret_key=app_key
 )
 
+
 @st.cache_data 
 def fetch_data():
     try:
         b2.set_bucket(os.getenv('B2_BUCKETNAME'))  
-        obj = b2.get_object('Cleaned_Austin_AirBnB.xlsx')  #Exact Name of File
+        obj = b2.get_object('Cleaned_Austin_AirBnB.xlsx')  # Name of File
 
         # Convert the StreamingBody object to a BytesIO object
-        # Done to combat Error
         file_content = obj.read()  # Read the content of the StreamingBody
         return pd.read_excel(BytesIO(file_content))  # Use BytesIO to create a file-like object
     except Exception as e:
@@ -54,7 +54,8 @@ def get_sentiment_score(text, analyzer):
         return sentiment['compound']
     return 0 # Default sentiment score if text is missing
 
-# Load trained model from pickle file
+
+# Load trained model and scaler from pickle file
 try:
     model, scaler, expected_features = load_model()
 except FileNotFoundError:
@@ -62,6 +63,8 @@ except FileNotFoundError:
     st.stop()
 
 # Streamlit UI
+#st.title("Airbnb Data Viewer")
+
 # Initialize session state variables
 if 'page' not in st.session_state:
     st.session_state.page = "Main"
@@ -187,6 +190,17 @@ def main():
         # Inputs with better styling
         rating_input = st.number_input("Minimum Review Rating", min_value=0.0, max_value=5.0, value=3.0, step=0.1)
         price_input = st.number_input("Maximum Price ($)", min_value=0, value=500)
+        try:
+            if price_input == 0:
+                raise ValueError("Price cannot be 0. Please enter a valid price.")
+            
+            if price_input > 12000:
+                st.error("Maximum Property Price is 12000.")
+                price_input = 12000  # Optionally, you can reset the price input to 12000, or leave it to the user to correct.
+                st.empty()
+                
+        except ValueError as e:
+            st.error(e)
 
         unique_property_types = (
             ["Any"] + sorted(data['property_type'].dropna().unique().tolist()) 
@@ -203,11 +217,12 @@ def main():
         search_button = st.button("Search")
 
         if search_button:
+            st.empty()
             filtered_data = data.copy()
 
             # Filter by rating
             if 'review_scores_rating' in filtered_data.columns:
-                filtered_data = filtered_data[filtered_data['review_scores_rating'] >= rating_input]
+                filtered_data = filtered_data[filtered_data['review_scores_rating'] == rating_input]
 
             # Filter by property type
             if selected_property_type != "Any" and 'property_type' in filtered_data.columns:
@@ -331,3 +346,24 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
