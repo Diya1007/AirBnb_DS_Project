@@ -190,10 +190,11 @@ def main():
         # Inputs with better styling
         rating_input = st.number_input("Minimum Review Rating", min_value=0.0, max_value=5.0, value=3.0, step=0.1)
         price_input = st.number_input("Maximum Price ($)", min_value=0, value=500)
+        results_placeholder = st.empty()
         if price_input > 12000:
                 st.error("Price cannot be greater than 12000. Please enter a valid price.")
                 price_input = 12000  # Optionally, you can reset the price input to 12000, or leave it to the user to correct.
-                st.empty()
+                results_placeholder.empty()
 
         unique_property_types = (
             ["Any"] + sorted(data['property_type'].dropna().unique().tolist()) 
@@ -210,7 +211,7 @@ def main():
         search_button = st.button("Search")
 
         if search_button:
-            st.empty()
+            results_placeholder.empty()
             filtered_data = data.copy()
 
             # Filter by rating
@@ -231,8 +232,8 @@ def main():
 
             # Display filtered data
             if len(filtered_data) > 0:
-                st.write(f"Found {len(filtered_data)} properties based on your search criteria.")
-                st.dataframe(filtered_data[['review_scores_rating', 'name', 'listing_url', 'price', 'bedrooms']])
+                results_placeholder.write(f"Found {len(filtered_data)} properties based on your search criteria.")
+                results_placeholder.dataframe(filtered_data[['review_scores_rating', 'name', 'listing_url', 'price', 'bedrooms']])
 
                 # Render map
                 if 'latitude' in filtered_data.columns and 'longitude' in filtered_data.columns:
@@ -258,11 +259,11 @@ def main():
                             "style": {"backgroundColor": "steelblue", "color": "white"}
                         }
                     )
-                    st.pydeck_chart(deck)
+                    results_placeholder.pydeck_chart(deck)
                 else:
-                    st.error("Latitude and longitude columns are missing or invalid.")
+                    results_placeholder.error("Latitude and longitude columns are missing or invalid.")
             else:
-                st.write("No properties match your search criteria.")
+                results_placeholder.write("No properties match your search criteria.")
 
     # Seller Page
     elif navigation == "Seller Page":
