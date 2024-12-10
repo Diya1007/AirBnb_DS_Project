@@ -210,6 +210,7 @@ def main():
         search_button = st.button("Search")
 
         if search_button:
+            st.empty()
             filtered_data = data.copy()
 
             # Filter by rating
