@@ -190,6 +190,10 @@ def main():
         # Inputs with better styling
         rating_input = st.number_input("Minimum Review Rating", min_value=0.0, max_value=5.0, value=3.0, step=0.1)
         price_input = st.number_input("Maximum Price ($)", min_value=0, value=500)
+        if price_input > 12000:
+                st.error("Price cannot be greater than 12000. Please enter a valid price.")
+                price_input = 12000  # Optionally, you can reset the price input to 12000, or leave it to the user to correct.
+
 
         unique_property_types = (
             ["Any"] + sorted(data['property_type'].dropna().unique().tolist()) 
