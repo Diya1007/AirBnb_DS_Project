@@ -195,7 +195,7 @@ def main():
                 raise ValueError("Price cannot be 0. Please enter a valid price.")
             
             if price_input > 12000:
-                st.error("Maximum price for the Property is 12000.")
+                st.error("Maximum Property Price is 12000.")
                 price_input = 12000  # Optionally, you can reset the price input to 12000, or leave it to the user to correct.
                 st.empty()
                 
