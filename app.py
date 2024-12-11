@@ -219,7 +219,7 @@ def main():
 
             # Filter by rating
             if 'review_scores_rating' in filtered_data.columns:
-                filtered_data = filtered_data[filtered_data['review_scores_rating'] <= rating_input]
+                filtered_data = filtered_data[filtered_data['review_scores_rating'] >= rating_input]
 
             # Filter by property type
             if selected_property_type != "Any" and 'property_type' in filtered_data.columns:
