@@ -185,7 +185,7 @@ def main():
     elif navigation == "Buyer Page" and data is not None:
         st.header("Buyer Page")
 
-        # Inputs with better styling
+       
         rating_input = st.number_input("Minimum Review Rating", min_value=0.0, max_value=5.0, value=3.0, step=0.1)
         price_input = st.number_input("Maximum Price ($)", min_value=0, value=500)
 
@@ -195,7 +195,7 @@ def main():
                 raise ValueError("Price cannot be 0. Please enter a valid price.")
             if price_input > 12000:
                 st.error("Maximum Property Price is 12000.")
-                price_input = 12000  # Optionally, you can reset the price input to 12000, or leave it to the user to correct.
+                price_input = 12000  
                 st.empty()
         except ValueError as e:
             st.error(e)
